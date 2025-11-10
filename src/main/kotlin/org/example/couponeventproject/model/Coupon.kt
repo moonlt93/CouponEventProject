@@ -9,9 +9,9 @@ class Coupon(
     val title: String,
     val couponType: CouponType,
     val percent: Int,
-    val size: Int,
+    var size: Int,
     val createdAt: LocalDate,
-    val updatedAt: LocalDateTime?
+    val expiredDate: LocalDateTime?
 
 ) {
 
@@ -25,24 +25,16 @@ class Coupon(
                 percent = percent,
                 size = size,
                 createdAt = LocalDate.now(),
-                updatedAt = null
+                expiredDate = LocalDateTime.now().plusDays(3)
             )
         }
 
     }
 
-    fun minusSize(): Coupon {
+    fun minusSize() {
 
         if (size <= 0) throw Exception("Size is 0")
+        size -= 1
 
-        return Coupon(
-            couponId = this.couponId,
-            title = this.title,
-            couponType = this.couponType,
-            percent = this.percent,
-            size = this.size - 1,
-            createdAt = this.createdAt,
-            updatedAt = LocalDateTime.now()
-        )
     }
 }

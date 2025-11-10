@@ -13,9 +13,8 @@ import java.time.LocalDateTime
 @NoArgsConstructor
 class CouponLogEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    val logId: String,
-    val sequence: Int,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val logId: Long?,
     val couponId: String,
     val userId: String,
     val createdAt: LocalDateTime,

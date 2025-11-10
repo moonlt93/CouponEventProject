@@ -1,19 +1,12 @@
 package org.example.couponeventproject.model.entity
 
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import lombok.Getter
-import lombok.NoArgsConstructor
-import lombok.Setter
+import jakarta.persistence.*
 import org.example.couponeventproject.enums.CouponType
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
+@Table(name = "coupon_entity")
 class CouponEntity(
 
     @Id
@@ -25,5 +18,6 @@ class CouponEntity(
     val percent: Int,
     val size: Int,
     val createdAt: LocalDate,
-    val updatedAt: LocalDateTime? = null,
-) {}
+    val expiredDate: LocalDateTime? = null,
+
+    ) {}
