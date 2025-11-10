@@ -22,4 +22,10 @@ class CouponLogAdapter(
 
     }
 
+    fun getCount(couponId: String): Int {
+
+        val count = couponLogRepository.findByCouponId(couponId).size
+        return count;
+    }
+
 }
