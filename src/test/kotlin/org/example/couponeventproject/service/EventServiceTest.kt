@@ -4,10 +4,13 @@ import org.assertj.core.api.Assertions.assertThat
 import org.example.couponeventproject.adapter.CouponAdapter
 import org.example.couponeventproject.adapter.CouponLogAdapter
 import org.example.couponeventproject.testfixture.CouponFixture
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.context.TestConstructor
 import java.util.UUID
 import java.util.concurrent.CountDownLatch
@@ -19,9 +22,12 @@ import java.util.concurrent.TimeUnit
 class EventServiceTest(
 
     private val eventFacade: EventFacade,
-    private val jdbcTemplate: org.springframework.jdbc.core.JdbcTemplate
+    private val jdbcTemplate: JdbcTemplate,
+    private val couponAdapter: CouponAdapter,
+    @Autowired private val couponLogAdapter: CouponLogAdapter,
+    logAdapter: CouponLogAdapter,
 
-) {
+    ) {
 
     private val couponId = UUID.randomUUID().toString()
 
@@ -61,7 +67,13 @@ class EventServiceTest(
         countDownLatch.await()
         executor.shutdown()
         executor.awaitTermination(10, TimeUnit.SECONDS)
+
+        val couponSize = couponAdapter.getCouponSize(couponId)
+        val couponLogSize = couponLogAdapter.getCount(couponId)
         println("All tasks finished.")
+
+        Assertions.assertEquals(0, countDownLatch.count)
+        Assertions.assertEquals(couponSize, couponSize)
 
     }
 
